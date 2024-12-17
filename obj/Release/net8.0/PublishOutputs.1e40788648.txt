@@ -1,0 +1,7 @@
+C:\Users\okhalij\Desktop\New app\SimpleApp\out\SimpleApp.exe
+C:\Users\okhalij\Desktop\New app\SimpleApp\out\appsettings.Development.json
+C:\Users\okhalij\Desktop\New app\SimpleApp\out\appsettings.json
+C:\Users\okhalij\Desktop\New app\SimpleApp\out\SimpleApp.dll
+C:\Users\okhalij\Desktop\New app\SimpleApp\out\SimpleApp.deps.json
+C:\Users\okhalij\Desktop\New app\SimpleApp\out\SimpleApp.runtimeconfig.json
+C:\Users\okhalij\Desktop\New app\SimpleApp\out\SimpleApp.pdb
