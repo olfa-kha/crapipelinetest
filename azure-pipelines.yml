@@ -10,7 +10,7 @@ variables:
   vmIPAddress: '172.16.0.5'  
   vmUsername: 'okhalij'    
   vmPassword: '@thingswyillbeok123'   
-  deploymentFolder: 'C:\\DeploymentFolder'        
+  deploymentFolder: 'C:\New folder'        
 
 steps:
   # Restore Dependencies
