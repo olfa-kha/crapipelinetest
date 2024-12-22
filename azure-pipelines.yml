@@ -45,6 +45,7 @@ steps:
       MachineName: '$(MachineNames)'
       AdminUserName: '$(AdminUserName)'
       AdminPassword: '$(AdminPassword)' # Use a secure pipeline variable for sensitive info
+      AzureSubscription: 'wiemsubs'
       CleanTargetBeforeCopy: true
 
   # Run Deployment Commands on Windows Virtual Machine
