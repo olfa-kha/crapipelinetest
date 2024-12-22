@@ -7,7 +7,7 @@ pool:
   vmImage: 'windows-latest' 
 
 variables:
-  vmIPAddress: 'vmapp'  
+  vmIPAddress: 'devopsrg'  
   vmUsername: 'okhalij'    
   vmPassword: '@thingswyillbeok1'   
   deploymentFolder: 'C:\cralab\web' 
