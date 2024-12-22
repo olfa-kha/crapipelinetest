@@ -7,7 +7,7 @@ pool:
   vmImage: 'windows-latest' 
 
 variables:
-  vmIPAddress: '13.93.85.27'  
+  vmIPAddress: 'vmapp,13.93.85.27'  
   vmUsername: 'okhalij'    
   vmPassword: '@thingswyillbeok1'   
   deploymentFolder: 'C:\AppDeployment'        
