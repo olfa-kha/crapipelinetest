@@ -10,7 +10,7 @@ variables:
   MachineNames: 'vmapp.westeurope.cloudapp.azure.com'  
   AdminUserName: 'okhalij'    
   AdminPassword: '@thingswyillbeok1'   
-  TargetPath: 'C:\cralab\web' 
+  TargetPath: '\\vmapp.westeurope.cloudapp.azure.com\web' 
   system.debug: true
 
 steps:
