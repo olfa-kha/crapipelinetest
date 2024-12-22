@@ -10,7 +10,8 @@ variables:
   vmIPAddress: 'vmapp'  
   vmUsername: 'okhalij'    
   vmPassword: '@thingswyillbeok1'   
-  deploymentFolder: 'C:\AppDeployment'        
+  deploymentFolder: 'C:\cralab\web' 
+  system.debug: true
 
 steps:
   # Restore Dependencies
