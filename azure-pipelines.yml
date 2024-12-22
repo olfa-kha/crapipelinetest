@@ -49,7 +49,7 @@ steps:
     inputs:
       SourcePath: '$(Build.ArtifactStagingDirectory)'
       TargetPath: '$(TargetPath)'
-      MachineName: '$(MachineNames)'
+      MachineNames: '$(MachineNames)'
       AdminUserName: '$(AdminUserName)'
       AdminPassword: '$(AdminPassword)' # Use a secure pipeline variable for sensitive info
       AzureSubscription: 'wiemsubs'
