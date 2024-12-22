@@ -7,10 +7,10 @@ pool:
   vmImage: 'windows-latest' 
 
 variables:
-  vmIPAddress: 'vmapp.westeurope.cloudapp.azure.com'  
-  vmUsername: 'okhalij'    
-  vmPassword: '@thingswyillbeok1'   
-  deploymentFolder: 'C:\cralab\web' 
+  MachineNames: 'vmapp.westeurope.cloudapp.azure.com'  
+  AdminUserName: 'okhalij'    
+  AdminPassword: '@thingswyillbeok1'   
+  TargetPath: 'C:\cralab\web' 
   system.debug: true
 
 steps:
@@ -41,20 +41,20 @@ steps:
     displayName: 'Copy Files to Windows Virtual Machine'
     inputs:
       SourcePath: '$(Build.ArtifactStagingDirectory)'
-      TargetPath: '$(deploymentFolder)'
-      MachineName: '$(vmIPAddress)'
-      AdminUserName: '$(vmUsername)'
-      AdminPassword: '$(vmPassword)' # Use a secure pipeline variable for sensitive info
+      TargetPath: '$(TargetPath)'
+      MachineName: '$(MachineNames)'
+      AdminUserName: '$(AdminUserName)'
+      AdminPassword: '$(AdminPassword)' # Use a secure pipeline variable for sensitive info
       CleanTargetBeforeCopy: true
 
   # Run Deployment Commands on Windows Virtual Machine
   - task: PowerShellOnTargetMachines@3
     displayName: 'Deploy Application on Windows Virtual Machine'
     inputs:
-      Machines: '$(vmIPAddress)'
-      AdminUserName: '$(vmUsername)'
-      AdminPassword: '$(vmPassword)' # Use a secure pipeline variable for sensitive info
+      Machines: '$(MachineNames)'
+      AdminUserName: '$(AdminUserName)'
+      AdminPassword: '$(AdminPassword)' # Use a secure pipeline variable for sensitive info
       ScriptInline: |
-        cd $(deploymentFolder)
+        cd $(TargetPath)
         # Example: Start the .NET application
         dotnet MyApp.dll
