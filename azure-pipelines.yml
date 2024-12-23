@@ -7,10 +7,10 @@ pool:
   vmImage: 'windows-latest' 
 
 variables:
-  MachineNames: '13.93.85.27'  
+  MachineNames: 'vmapp12.westeurope.cloudapp.azure.com'  
   AdminUserName: 'okhalij'    
   AdminPassword: '@thingswillbeok1'   
-  TargetPath: '\\13.93.85.27\web' 
+  TargetPath: '\\vmapp12.westeurope.cloudapp.azure.com\web' 
   system.debug: true
 
 steps:
