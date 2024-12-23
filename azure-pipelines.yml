@@ -62,6 +62,7 @@ steps:
       Machines: '$(MachineNames)'
       AdminUserName: '$(AdminUserName)'
       AdminPassword: '$(AdminPassword)' # Use a secure pipeline variable for sensitive info
+      CommunicationProtocol: 'Http'
       ScriptInline: |
         cd $(TargetPath)
         # Example: Start the .NET application
