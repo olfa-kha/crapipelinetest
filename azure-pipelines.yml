@@ -9,7 +9,7 @@ pool:
 variables:
   MachineNames: 'vmapp12.westeurope.cloudapp.azure.com'  
   AdminUserName: 'okhalij'    
-  AdminPassword: '@thingswillbeok1'   
+  AdminPassword: '$(@thingswillbeok1)'
   TargetPath: '\\vmapp12.westeurope.cloudapp.azure.com\web' 
   system.debug: true
 
