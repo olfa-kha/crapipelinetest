@@ -13,57 +13,90 @@ variables:
   TargetPath: '\\vmapp12.westeurope.cloudapp.azure.com\web' 
   system.debug: true
 
-steps:
-  # Debug: Output Variable Values
-  - script: |
-      echo MachineNames: $(MachineNames)
-      echo AdminUserName: $(AdminUserName)
-      echo TargetPath: $(TargetPath)
-    displayName: 'Debug: Output Variables'
-    
-  # Restore Dependencies
-  - task: DotNetCoreCLI@2
-    displayName: 'Restore Dependencies'
-    inputs:
-      command: 'restore'
-      projects: '**/*.csproj'
+stages:
+# Stage 1: Restore Dependencies
+- stage: RestoreDependencies
+  displayName: "Restore Dependencies Stage"
+  jobs:
+  - job: RestoreDependenciesJob
+    displayName: "Restore Dependencies Job"
+    steps:
+    - script: |
+        echo MachineNames: $(MachineNames)
+        echo AdminUserName: $(AdminUserName)
+        echo TargetPath: $(TargetPath)
+      displayName: 'Debug: Output Variables'
 
-  # Build Application
-  - task: DotNetCoreCLI@2
-    displayName: 'Build Application'
-    inputs:
-      command: 'build'
-      projects: '**/*.csproj'
+    - task: DotNetCoreCLI@2
+      displayName: 'Restore Dependencies'
+      inputs:
+        command: 'restore'
+        projects: '**/*.csproj'
 
-  # Publish Application
-  - task: DotNetCoreCLI@2
-    displayName: 'Publish Application'
-    inputs:
-      command: 'publish'
-      projects: '**/*.csproj'
-      arguments: '--configuration Release --output $(Build.ArtifactStagingDirectory)'
+# Stage 2: Build Application
+- stage: BuildApplication
+  displayName: "Build Application Stage"
+  dependsOn: RestoreDependencies
+  jobs:
+  - job: BuildApplicationJob
+    displayName: "Build Application Job"
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: 'Build Application'
+      inputs:
+        command: 'build'
+        projects: '**/*.csproj'
 
-  # Copy Files to Virtual Machine
-  - task: WindowsMachineFileCopy@2
-    displayName: 'Copy Files to Windows Virtual Machine'
-    inputs:
-      SourcePath: '$(Build.ArtifactStagingDirectory)'
-      TargetPath: '$(TargetPath)'
-      MachineNames: '$(MachineNames)'
-      AdminUserName: '$(AdminUserName)'
-      AdminPassword: '$(AdminPassword)' # Use a secure pipeline variable for sensitive info
-      AzureSubscription: 'wiemsubs'
-      CleanTargetBeforeCopy: true
+# Stage 3: Publish Application
+- stage: PublishApplication
+  displayName: "Publish Application Stage"
+  dependsOn: BuildApplication
+  jobs:
+  - job: PublishApplicationJob
+    displayName: "Publish Application Job"
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: 'Publish Application'
+      inputs:
+        command: 'publish'
+        projects: '**/*.csproj'
+        arguments: '--configuration Release --output $(Build.ArtifactStagingDirectory)'
 
-  # Run Deployment Commands on Windows Virtual Machine
-  - task: PowerShellOnTargetMachines@3
-    displayName: 'Deploy Application on Windows Virtual Machine'
-    inputs:
-      Machines: '$(MachineNames)'
-      AdminUserName: '$(AdminUserName)'
-      AdminPassword: '$(AdminPassword)' # Use a secure pipeline variable for sensitive info
-      CommunicationProtocol: 'Https'
-      ScriptInline: |
-        cd $(TargetPath)
-        # Example: Start the .NET application
-        dotnet MyApp.dll
+# Stage 4: Copy Files to Virtual Machine
+- stage: CopyFiles
+  displayName: "Copy Files Stage"
+  dependsOn: PublishApplication
+  jobs:
+  - job: CopyFilesJob
+    displayName: "Copy Files to Windows Virtual Machine"
+    steps:
+    - task: WindowsMachineFileCopy@2
+      displayName: 'Copy Files to Windows Virtual Machine'
+      inputs:
+        SourcePath: '$(Build.ArtifactStagingDirectory)'
+        TargetPath: '$(TargetPath)'
+        MachineNames: '$(MachineNames)'
+        AdminUserName: '$(AdminUserName)'
+        AdminPassword: '$(AdminPassword)' # Use a secure pipeline variable for sensitive info
+        AzureSubscription: 'wiemsubs'
+        CleanTargetBeforeCopy: true
+
+# Stage 5: Deploy Application
+- stage: DeployApplication
+  displayName: "Deploy Application Stage"
+  dependsOn: CopyFiles
+  jobs:
+  - job: DeployApplicationJob
+    displayName: "Deploy Application Job"
+    steps:
+    - task: PowerShellOnTargetMachines@3
+      displayName: 'Deploy Application on Windows Virtual Machine'
+      inputs:
+        Machines: '$(MachineNames)'
+        AdminUserName: '$(AdminUserName)'
+        AdminPassword: '$(AdminPassword)' # Use a secure pipeline variable for sensitive info
+        CommunicationProtocol: 'Https'
+        ScriptInline: |
+          cd $(TargetPath)
+          # Example: Start the .NET application
+          dotnet MyApp.dll
